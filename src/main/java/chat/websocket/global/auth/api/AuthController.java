@@ -1,6 +1,7 @@
 package chat.websocket.global.auth.api;
 
 import chat.websocket.global.auth.application.AuthService;
+import chat.websocket.global.auth.dto.LoginDto;
 import chat.websocket.global.auth.dto.RegisterDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +27,18 @@ public class AuthController {
         return "member/register";
     }
 
+    @GetMapping("/login")
+    public String loginPage(Model model) {
+        model.addAttribute("member", new LoginDto());
+        return "member/login";
+    }
+
     @PostMapping("/register")
     public String register(@Validated @ModelAttribute RegisterDto registerDto) {
         log.info("{}",registerDto);
         authService.register(registerDto);
         return "redirect:/";
     }
-
-
 
 
 }
