@@ -11,12 +11,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 @Entity
 @Getter
@@ -30,7 +31,7 @@ public class ChatRoom {
 
     private String name;
 
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -39,4 +40,21 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatMessage> messages;
 
+    @Builder
+    public ChatRoom(Long id, String name, LocalDate createdAt, Member member,
+            List<ChatMessage> messages) {
+        this.id = id;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.member = member;
+        this.messages = messages != null ? messages : new ArrayList<>();
+    }
+
+    public static ChatRoom createRoom(Member member, String name) {
+        return ChatRoom.builder()
+                .name(name)
+                .createdAt(LocalDate.now())
+                .member(member)
+                .build();
+    }
 }
