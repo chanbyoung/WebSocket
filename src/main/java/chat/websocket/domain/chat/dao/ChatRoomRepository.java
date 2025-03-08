@@ -11,10 +11,10 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     @Query("""
            SELECT cr
            FROM ChatRoom cr
-           JOIN FETCH cr.messages m
-           JOIN FETCH m.member
+           LEFT JOIN FETCH cr.messages m
+           LEFT JOIN FETCH m.member
            WHERE cr.id = :chatRoom
             """)
-    Optional<ChatRoom> findChatRoomWithMessageById(@Param(value = "chatRoom") Long chatRoom);
+    Optional<ChatRoom> findChatRoomWithMessageById(@Param(value = "chatRoom") Long chatRoomId);
 
 }

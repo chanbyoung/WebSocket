@@ -9,7 +9,7 @@
 <!-- 로그인한 경우 -->
 <div th:if="${isAuthenticated}">
   <p>안녕하세요, <span th:text="${username}"></span>님!</p>
-  <a href="/chat">채팅방 가기</a>
+  <a href="/chat/rooms">채팅방 가기</a>
 
   <!-- 로그아웃: POST 방식 -->
   <form th:action="@{/auth/logout}" method="post">

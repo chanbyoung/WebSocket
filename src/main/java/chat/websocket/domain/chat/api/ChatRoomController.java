@@ -6,6 +6,7 @@ import chat.websocket.domain.chat.dto.ChatRoomWithMessageDto;
 import chat.websocket.domain.chat.entity.ChatRoom;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/chat")
+@Slf4j
 @RequiredArgsConstructor
 public class ChatRoomController {
 
@@ -39,8 +42,9 @@ public class ChatRoomController {
 
     // 채팅방 생성
     @PostMapping("/rooms/new")
-    public String createRoom(@ModelAttribute(name = "name") String name, @AuthenticationPrincipal
+    public String createRoom(@RequestParam(name = "name") String name, @AuthenticationPrincipal
             UserDetails user) {
+        log.info("name = {} ", name);
         ChatRoom chatRoom = chatRoomService.addRoom(user.getUsername(), name);
         return "redirect:/chat/rooms/" + chatRoom.getId();
     }
@@ -50,7 +54,7 @@ public class ChatRoomController {
     public String enterRoom(@PathVariable Long roomId, Model model) {
         ChatRoomWithMessageDto chatRoom = chatRoomService.getChatRoom(roomId);
         model.addAttribute("chatRoom", chatRoom);
-        return "chat/chatroom";
+        return "chat/chatRoom";
     }
 
 

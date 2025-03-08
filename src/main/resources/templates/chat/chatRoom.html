@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>채팅방</title>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+  <script>
+    var stompClient = null;
+    var roomId = "[[${roomId}]]";  // Thymeleaf에서 채팅방 ID 가져오기
+
+    function connect() {
+      var socket = new SockJS('/ws-chat');
+      stompClient = Stomp.over(socket);
+      stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/chatroom/' + roomId, function (message) {
+          showMessage(JSON.parse(message.body));
+        });
+      });
+    }
+
+    function sendMessage() {
+      var messageContent = document.getElementById("message").value;
+      var sender = document.getElementById("sender").value;
+      var chatMessage = {
+        roomId: roomId,
+        senderName: sender,
+        content: messageContent
+      };
+      stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+      document.getElementById("message").value = "";
+    }
+
+    function showMessage(message) {
+      var chat = document.getElementById("chat");
+      var messageElement = document.createElement("p");
+      messageElement.innerText = message.senderName + ": " + message.content;
+      chat.appendChild(messageElement);
+    }
+
+    window.onload = function () {
+      connect();
+    };
+  </script>
+</head>
+<body>
+<h2 th:text="${room.name} + ' 채팅방'"></h2>
+
+<div id="chat">
+  <p th:each="msg : ${room.messages}">
+    <span th:text="${msg.senderName}"></span> :
+    <span th:text="${msg.content}"></span>
+    <small th:text="${msg.timeStamp}"></small>
+  </p>
+</div>
+
+<input type="text" id="sender" placeholder="닉네임 입력">
+<input type="text" id="message" placeholder="메시지를 입력하세요">
+<button onclick="sendMessage()">보내기</button>
+
+<br>
+<a href="/chat/rooms">채팅방 목록으로 이동</a>
+</body>
+</html>
