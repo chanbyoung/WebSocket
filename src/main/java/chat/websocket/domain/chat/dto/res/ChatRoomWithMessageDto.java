@@ -1,7 +1,6 @@
-package chat.websocket.domain.chat.dto;
+package chat.websocket.domain.chat.dto.res;
 
 import chat.websocket.domain.chat.entity.ChatRoom;
-import chat.websocket.domain.member.entity.Member;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,11 +10,11 @@ import lombok.Getter;
 public class ChatRoomWithMessageDto {
 
     private String name;
-    private List<MessageDto> messages;
+    private List<MessageGetDto> messages;
 
     public static ChatRoomWithMessageDto toDto(ChatRoom chatRoom) {
-        List<MessageDto> messageList = chatRoom.getMessages().stream()
-                .map(MessageDto::toDto)
+        List<MessageGetDto> messageList = chatRoom.getMessages().stream()
+                .map(MessageGetDto::toDto)
                 .toList();
 
         return ChatRoomWithMessageDto.builder()

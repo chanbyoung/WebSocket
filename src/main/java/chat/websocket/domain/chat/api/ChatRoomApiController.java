@@ -1,8 +1,8 @@
 package chat.websocket.domain.chat.api;
 
 import chat.websocket.domain.chat.application.ChatRoomService;
-import chat.websocket.domain.chat.dto.ChatRoomGetDto;
-import chat.websocket.domain.chat.dto.ChatRoomWithMessageDto;
+import chat.websocket.domain.chat.dto.res.ChatRoomGetDto;
+import chat.websocket.domain.chat.dto.res.ChatRoomWithMessageDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,8 @@
 package chat.websocket.domain.chat.api;
 
 import chat.websocket.domain.chat.application.ChatRoomService;
-import chat.websocket.domain.chat.dto.ChatRoomGetDto;
-import chat.websocket.domain.chat.dto.ChatRoomWithMessageDto;
+import chat.websocket.domain.chat.dto.res.ChatRoomGetDto;
+import chat.websocket.domain.chat.dto.res.ChatRoomWithMessageDto;
 import chat.websocket.domain.chat.entity.ChatRoom;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

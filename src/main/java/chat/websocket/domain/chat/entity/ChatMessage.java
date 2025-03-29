@@ -28,9 +28,7 @@ public class ChatMessage {
 
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private String senderName;
 
     private LocalDate timeStamp;
 

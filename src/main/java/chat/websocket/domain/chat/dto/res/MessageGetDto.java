@@ -1,4 +1,4 @@
-package chat.websocket.domain.chat.dto;
+package chat.websocket.domain.chat.dto.res;
 
 import chat.websocket.domain.chat.entity.ChatMessage;
 import chat.websocket.domain.chat.entity.MessageType;
@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MessageDto {
+public class MessageGetDto {
 
     private String senderName;
     private String content;
@@ -16,9 +16,9 @@ public class MessageDto {
     private LocalDate timeStamp;
 
 
-    public static MessageDto toDto(ChatMessage chatMessage) {
-        return MessageDto.builder()
-                .senderName(chatMessage.getMember().getNickname())
+    public static MessageGetDto toDto(ChatMessage chatMessage) {
+        return MessageGetDto.builder()
+                .senderName(chatMessage.getSenderName())
                 .content(chatMessage.getContent())
                 .messageType(chatMessage.getMessageType())
                 .timeStamp(chatMessage.getTimeStamp())

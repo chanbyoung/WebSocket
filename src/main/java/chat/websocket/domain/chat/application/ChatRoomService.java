@@ -1,8 +1,8 @@
 package chat.websocket.domain.chat.application;
 
 import chat.websocket.domain.chat.dao.ChatRoomRepository;
-import chat.websocket.domain.chat.dto.ChatRoomGetDto;
-import chat.websocket.domain.chat.dto.ChatRoomWithMessageDto;
+import chat.websocket.domain.chat.dto.res.ChatRoomGetDto;
+import chat.websocket.domain.chat.dto.res.ChatRoomWithMessageDto;
 import chat.websocket.domain.chat.entity.ChatRoom;
 import chat.websocket.domain.member.dao.MemberRepository;
 import chat.websocket.domain.member.entity.Member;
