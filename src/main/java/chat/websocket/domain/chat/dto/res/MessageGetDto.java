@@ -6,15 +6,13 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
-public class MessageGetDto {
-
-    private String senderName;
-    private String content;
-    private MessageType messageType;
-    private LocalDate timeStamp;
-
+public record MessageGetDto(
+        String senderName,
+        String content,
+        MessageType messageType,
+        LocalDate timeStamp
+) {
 
     public static MessageGetDto toDto(ChatMessage chatMessage) {
         return MessageGetDto.builder()

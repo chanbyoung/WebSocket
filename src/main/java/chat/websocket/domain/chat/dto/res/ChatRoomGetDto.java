@@ -5,12 +5,12 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
-public class ChatRoomGetDto {
-    private Long id;
-    private String name;
-    private LocalDate createdAt;
+public record ChatRoomGetDto(
+        Long id,
+        String name,
+        LocalDate createdAt
+) {
 
     public static ChatRoomGetDto toDto(ChatRoom chatRoom) {
         return ChatRoomGetDto.builder()

@@ -5,12 +5,12 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
-public class ChatRoomWithMessageDto {
+public record ChatRoomWithMessageDto(
+        String name,
+        List<MessageGetDto> messages
+) {
 
-    private String name;
-    private List<MessageGetDto> messages;
 
     public static ChatRoomWithMessageDto toDto(ChatRoom chatRoom) {
         List<MessageGetDto> messageList = chatRoom.getMessages().stream()
