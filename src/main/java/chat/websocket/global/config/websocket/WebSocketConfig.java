@@ -1,5 +1,6 @@
 package chat.websocket.global.config.websocket;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -13,8 +14,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  * - 메시지 브로커를 설정하여 클라이언트 간 실시간 메시지 통신 가능
  */
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final CustomHandshakeHandler customHandshakeHandler;
 
     /**
      * 클라이언트(Web, 모바일 등)가 연결할 WebSocket 엔드포인트 설정
@@ -28,6 +32,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 클라이언트가 WebSocket 연결을 시작할 때 사용할 엔드포인트 정의
         registry.addEndpoint("/ws")  // WebSocket 연결 엔드포인트를 `/ws`로 설정
+                .setAllowedOrigins("http://localhost:3000") // 클라이언트 주소 허용
+                .setHandshakeHandler(customHandshakeHandler)
                 .withSockJS();       // WebSocket을 지원하지 않는 환경에서 SockJS 사용 가능
     }
 
@@ -43,7 +49,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // 서버에서 클라이언트로 메시지를 전달할 때 사용하는 **메시지 브로커 설정**
         // -> 클라이언트가 특정 주제를 구독하면 해당 메시지를 받을 수 있음
-        config.enableSimpleBroker("/topic");  // 메시지 구독 prefix (ex: /topic/public)
+        config.enableSimpleBroker("/topic", "/user");  // 메시지 구독 prefix (ex: /topic/public)
 
         // 클라이언트에서 서버로 메시지를 보낼 때 사용하는 prefix 설정
         // 예: 클라이언트가 "/app/chat.sendMessage"로 메시지를 전송하면
