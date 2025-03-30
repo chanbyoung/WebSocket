@@ -2,16 +2,15 @@ package chat.websocket.domain.chat.dto.res;
 
 import chat.websocket.domain.chat.entity.ChatMessage;
 import chat.websocket.domain.chat.entity.MessageType;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
-import lombok.Getter;
 
 @Builder
 public record MessageGetDto(
         String senderName,
         String content,
         MessageType messageType,
-        LocalDate timeStamp
+        LocalDateTime timeStamp
 ) {
 
     public static MessageGetDto toDto(ChatMessage chatMessage) {
