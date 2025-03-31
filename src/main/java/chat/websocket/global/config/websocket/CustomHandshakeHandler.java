@@ -27,6 +27,7 @@ public class CustomHandshakeHandler extends DefaultHandshakeHandler {
             if (session != null) {
                 SecurityContext securityContext = (SecurityContext) session.getAttribute(
                         SECURITY_CONTEXT);
+                log.info("securityContext = {} ", securityContext);
                 if (securityContext != null) {
                     Authentication authentication = securityContext.getAuthentication();
                     if (authentication != null && authentication.isAuthenticated()) {

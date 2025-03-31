@@ -3,6 +3,7 @@ package chat.websocket.domain.chat.application;
 import chat.websocket.domain.chat.dao.ChatRepository;
 import chat.websocket.domain.chat.dao.ChatRoomRepository;
 import chat.websocket.domain.chat.dto.req.ChatAddDto;
+import chat.websocket.domain.chat.dto.res.MessageGetDto;
 import chat.websocket.domain.chat.entity.ChatMessage;
 import chat.websocket.domain.chat.entity.ChatRoom;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,6 @@ public class ChatService {
 
         // 채팅방에 전송
         simpMessageTemplate.convertAndSend(CHAT_TOPIC_PREFIX + chatAddDto.chatRoomId(),
-                chatMessage);
+                MessageGetDto.from(chatMessage));
     }
 }

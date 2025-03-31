@@ -13,7 +13,7 @@ public record MessageGetDto(
         LocalDateTime timeStamp
 ) {
 
-    public static MessageGetDto toDto(ChatMessage chatMessage) {
+    public static MessageGetDto from(ChatMessage chatMessage) {
         return MessageGetDto.builder()
                 .senderName(chatMessage.getSenderName())
                 .content(chatMessage.getContent())
@@ -21,4 +21,6 @@ public record MessageGetDto(
                 .timeStamp(chatMessage.getTimeStamp())
                 .build();
     }
+
+
 }

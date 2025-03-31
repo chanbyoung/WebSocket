@@ -5,6 +5,7 @@ import chat.websocket.domain.chat.dto.res.ChatRoomGetDto;
 import chat.websocket.domain.chat.dto.res.ChatRoomWithMessageDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/chatRoom")
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class ChatRoomApiController {
     public ResponseEntity<Void> addRoom(@RequestBody String name, @AuthenticationPrincipal
             UserDetails user) {
         chatRoomService.addRoom(user.getUsername(), name);
+        log.info("{}", user.getUsername());
         return ResponseEntity.noContent().build();
     }
 

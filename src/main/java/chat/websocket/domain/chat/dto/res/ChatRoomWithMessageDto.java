@@ -13,7 +13,7 @@ public record ChatRoomWithMessageDto(
 
     public static ChatRoomWithMessageDto toDto(ChatRoom chatRoom) {
         List<MessageGetDto> messageList = chatRoom.getMessages().stream()
-                .map(MessageGetDto::toDto)
+                .map(MessageGetDto::from)
                 .toList();
 
         return ChatRoomWithMessageDto.builder()
