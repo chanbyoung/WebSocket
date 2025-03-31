@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .nickname(member.getNickname())
                 .authorities(Collections.singleton(
                         new SimpleGrantedAuthority("ROLE_USER")))
-                .password(null)
+                .password(member.getPassword())
                 .build();
 
     }
