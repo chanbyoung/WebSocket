@@ -33,12 +33,4 @@ public class AuthService {
         memberRepository.save(registerDto.toEntity(passwordEncoder));
     }
 
-
-    public void login(LoginDto loginDto) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                loginDto.account(), loginDto.password());
-
-        Authentication authenticate = authenticationManager.authenticate(authToken);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-    }
 }

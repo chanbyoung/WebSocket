@@ -33,13 +33,5 @@ public class AuthApiController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginDto loginDto, HttpServletRequest request) {
-        authService.login(loginDto);
-        HttpSession session = request.getSession(true);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
-        return ResponseEntity.ok().build();
-    }
 
 }
