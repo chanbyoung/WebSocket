@@ -11,11 +11,7 @@ public record ChatRoomWithMessageDto(
 ) {
 
 
-    public static ChatRoomWithMessageDto toDto(ChatRoom chatRoom) {
-        List<MessageGetDto> messageList = chatRoom.getMessages().stream()
-                .map(MessageGetDto::from)
-                .toList();
-
+    public static ChatRoomWithMessageDto toDto(ChatRoom chatRoom, List<MessageGetDto> messageList) {
         return ChatRoomWithMessageDto.builder()
                 .name(chatRoom.getName())
                 .messages(messageList)

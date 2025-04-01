@@ -6,7 +6,10 @@ import chat.websocket.domain.chat.dto.req.ChatAddDto;
 import chat.websocket.domain.chat.dto.res.MessageGetDto;
 import chat.websocket.domain.chat.entity.ChatMessage;
 import chat.websocket.domain.chat.entity.ChatRoom;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +40,11 @@ public class ChatService {
         // 채팅방에 전송
         simpMessageTemplate.convertAndSend(CHAT_TOPIC_PREFIX + chatAddDto.chatRoomId(),
                 MessageGetDto.from(chatMessage));
+    }
+
+    public Slice<ChatMessage> getChatSliceList(Long chatRoomId, LocalDateTime lastDateTime,
+            Long lastChatId, Pageable pageable) {
+        // TODO
+        return null;
     }
 }

@@ -1,13 +1,18 @@
 package chat.websocket.domain.chat.application;
 
+import chat.websocket.domain.chat.dao.ChatRepository;
 import chat.websocket.domain.chat.dao.ChatRoomRepository;
 import chat.websocket.domain.chat.dto.res.ChatRoomGetDto;
 import chat.websocket.domain.chat.dto.res.ChatRoomWithMessageDto;
+import chat.websocket.domain.chat.dto.res.MessageGetDto;
 import chat.websocket.domain.chat.entity.ChatRoom;
 import chat.websocket.domain.member.dao.MemberRepository;
 import chat.websocket.domain.member.entity.Member;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepository chatRepository;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -39,10 +45,21 @@ public class ChatRoomService {
 
     // 채팅방 조회
     public ChatRoomWithMessageDto getChatRoom(Long chatRoomId) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomWithMessageById(chatRoomId)
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(RuntimeException::new);
 
-        return ChatRoomWithMessageDto.toDto(chatRoom);
+        // 기본 커서 값
+        LocalDateTime defaultTimeStamp = LocalDateTime.now();
+        Long defaultLasId = Long.MAX_VALUE;
+        Pageable pageable = PageRequest.of(0, 20);
+
+        // 메시지 슬라이스 조회
+        List<MessageGetDto> list = chatRepository.findChatByCursor(chatRoomId, defaultTimeStamp,
+                        defaultLasId, pageable)
+                .stream()
+                .map(MessageGetDto::from)
+                .toList();
+        return ChatRoomWithMessageDto.toDto(chatRoom, list);
     }
 
 }
