@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,11 +19,14 @@ public class ChatApiController {
     private final ChatService chatService;
 
     @MessageMapping("/chat.sendMessage")
-    public ResponseEntity<Void> sendMessage(@RequestBody ChatAddDto chatAddDto,
-            Principal principal
+    public ResponseEntity<Void> sendMessage(ChatAddDto chatAddDto,
+            Authentication authentication
             ) {
-        log.info("senderId ={} ", principal.getName());
-        chatService.sendMessage(chatAddDto, principal.getName());
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUser customUser) {
+            chatService.sendMessage(chatAddDto, customUser.getNickname());
+        } else {
+            throw new IllegalStateException("인증된 사용자 정보가 올바르지 않습니다.");
+        }
         return ResponseEntity.noContent().build();
     }
 

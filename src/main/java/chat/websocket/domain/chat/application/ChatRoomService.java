@@ -5,6 +5,7 @@ import chat.websocket.domain.chat.dao.ChatRoomRepository;
 import chat.websocket.domain.chat.dto.res.ChatRoomGetDto;
 import chat.websocket.domain.chat.dto.res.ChatRoomWithMessageDto;
 import chat.websocket.domain.chat.dto.res.MessageGetDto;
+import chat.websocket.domain.chat.dto.res.MessageListGetDto;
 import chat.websocket.domain.chat.entity.ChatRoom;
 import chat.websocket.domain.member.dao.MemberRepository;
 import chat.websocket.domain.member.entity.Member;
@@ -50,16 +51,25 @@ public class ChatRoomService {
 
         // 기본 커서 값
         LocalDateTime defaultTimeStamp = LocalDateTime.now();
-        Long defaultLasId = Long.MAX_VALUE;
+        Long defaultId = Long.MAX_VALUE;
         Pageable pageable = PageRequest.of(0, 20);
 
         // 메시지 슬라이스 조회
         List<MessageGetDto> list = chatRepository.findChatByCursor(chatRoomId, defaultTimeStamp,
-                        defaultLasId, pageable)
+                        defaultId, pageable)
                 .stream()
                 .map(MessageGetDto::from)
                 .toList();
         return ChatRoomWithMessageDto.toDto(chatRoom, list);
     }
 
+    public MessageListGetDto getChatRoomRoad(Long roomId, LocalDateTime lastTimeStamp, Long lastId) {
+        Pageable pageable = PageRequest.of(0, 20);
+        List<MessageGetDto> list = chatRepository.findChatByCursor(roomId,
+                        lastTimeStamp, lastId,
+                        pageable).stream()
+                .map(MessageGetDto::from)
+                .toList();
+        return MessageListGetDto.from(list);
+    }
 }
