@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record MessageGetDto(
+        Long id,
         String senderName,
         String content,
         MessageType messageType,
@@ -15,6 +16,7 @@ public record MessageGetDto(
 
     public static MessageGetDto from(ChatMessage chatMessage) {
         return MessageGetDto.builder()
+                .id(chatMessage.getId())
                 .senderName(chatMessage.getSenderName())
                 .content(chatMessage.getContent())
                 .messageType(chatMessage.getMessageType())

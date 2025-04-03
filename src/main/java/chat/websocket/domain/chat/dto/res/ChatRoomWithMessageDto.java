@@ -7,14 +7,14 @@ import lombok.Builder;
 @Builder
 public record ChatRoomWithMessageDto(
         String name,
-        List<MessageGetDto> messages
+        MessageListGetDto messages
 ) {
 
 
     public static ChatRoomWithMessageDto toDto(ChatRoom chatRoom, List<MessageGetDto> messageList) {
         return ChatRoomWithMessageDto.builder()
                 .name(chatRoom.getName())
-                .messages(messageList)
+                .messages(MessageListGetDto.from(messageList))
                 .build();
     }
 }

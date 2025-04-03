@@ -5,12 +5,12 @@ import lombok.Builder;
 
 @Builder
 public record MessageListGetDto(
-        List<MessageGetDto> message
+        List<MessageGetDto> messages
 ) {
 
     public static MessageListGetDto from(List<MessageGetDto> message) {
         return MessageListGetDto.builder()
-                .message(message)
+                .messages(message)
                 .build();
     }
 }
