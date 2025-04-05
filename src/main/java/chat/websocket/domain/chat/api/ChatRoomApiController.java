@@ -51,6 +51,7 @@ public class ChatRoomApiController {
     public ResponseEntity<MessageListGetDto> getRoomChatRoad(@PathVariable Long roomId,
             @RequestParam LocalDateTime lastTimeStamp,
             @RequestParam Long lastId) {
+        log.info("lastId = {} ", lastId);
         MessageListGetDto chatRoomRoad = chatRoomService.getChatRoomRoad(roomId,
                lastTimeStamp, lastId);
         return ResponseEntity.ok(chatRoomRoad);

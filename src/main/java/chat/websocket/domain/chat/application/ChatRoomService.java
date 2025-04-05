@@ -6,17 +6,21 @@ import chat.websocket.domain.chat.dto.res.ChatRoomGetDto;
 import chat.websocket.domain.chat.dto.res.ChatRoomWithMessageDto;
 import chat.websocket.domain.chat.dto.res.MessageGetDto;
 import chat.websocket.domain.chat.dto.res.MessageListGetDto;
+import chat.websocket.domain.chat.entity.ChatMessage;
 import chat.websocket.domain.chat.entity.ChatRoom;
 import chat.websocket.domain.member.dao.MemberRepository;
 import chat.websocket.domain.member.entity.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -52,24 +56,23 @@ public class ChatRoomService {
         // 기본 커서 값
         LocalDateTime defaultTimeStamp = LocalDateTime.now();
         Long defaultId = Long.MAX_VALUE;
-        Pageable pageable = PageRequest.of(0, 20);
 
         // 메시지 슬라이스 조회
-        List<MessageGetDto> list = chatRepository.findChatByCursor(chatRoomId, defaultTimeStamp,
-                        defaultId, pageable)
-                .stream()
-                .map(MessageGetDto::from)
-                .toList();
-        return ChatRoomWithMessageDto.toDto(chatRoom, list);
+        MessageListGetDto chatRoomRoad = getChatRoomRoad(chatRoomId, defaultTimeStamp, defaultId);
+        return ChatRoomWithMessageDto.of(chatRoom, chatRoomRoad);
     }
 
     public MessageListGetDto getChatRoomRoad(Long roomId, LocalDateTime lastTimeStamp, Long lastId) {
-        Pageable pageable = PageRequest.of(0, 20);
-        List<MessageGetDto> list = chatRepository.findChatByCursor(roomId,
-                        lastTimeStamp, lastId,
-                        pageable).stream()
+        Pageable pageable = PageRequest.of(0, 20); // limit = 20
+        Slice<ChatMessage> messageSlice = chatRepository.findChatByCursor(
+                roomId, lastTimeStamp, lastId, pageable);
+
+        log.info("hasNext = {} ", messageSlice.hasNext());
+        List<MessageGetDto> messages = messageSlice.getContent()
+                .stream()
                 .map(MessageGetDto::from)
                 .toList();
-        return MessageListGetDto.from(list);
+
+        return MessageListGetDto.of(messages, messageSlice.hasNext());
     }
 }

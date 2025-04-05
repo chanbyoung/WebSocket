@@ -5,12 +5,14 @@ import lombok.Builder;
 
 @Builder
 public record MessageListGetDto(
-        List<MessageGetDto> messages
+        List<MessageGetDto> messages,
+        boolean hasNext
 ) {
 
-    public static MessageListGetDto from(List<MessageGetDto> message) {
+    public static MessageListGetDto of(List<MessageGetDto> message, boolean hasNext) {
         return MessageListGetDto.builder()
                 .messages(message)
+                .hasNext(hasNext)
                 .build();
     }
 }

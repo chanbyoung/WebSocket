@@ -11,10 +11,10 @@ public record ChatRoomWithMessageDto(
 ) {
 
 
-    public static ChatRoomWithMessageDto toDto(ChatRoom chatRoom, List<MessageGetDto> messageList) {
+    public static ChatRoomWithMessageDto of(ChatRoom chatRoom, MessageListGetDto messageList) {
         return ChatRoomWithMessageDto.builder()
                 .name(chatRoom.getName())
-                .messages(MessageListGetDto.from(messageList))
+                .messages(messageList)
                 .build();
     }
 }
