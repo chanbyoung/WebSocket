@@ -1,7 +1,6 @@
 package chat.websocket.domain.chat.dto.res;
 
 import chat.websocket.domain.chat.entity.ChatRoom;
-import java.util.List;
 import lombok.Builder;
 
 @Builder

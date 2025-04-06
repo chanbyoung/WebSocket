@@ -22,3 +22,6 @@ logging:
     org:
       hibernate:
         SQL: debug
+
+host:
+  name: "http://localhost:3000"
