@@ -24,5 +24,14 @@ public record MessageGetDto(
                 .build();
     }
 
+    public static MessageGetDto createJoinMessage(String userName) {
+        return MessageGetDto.builder()
+                .messageType(MessageType.JOIN)
+                .senderName("SYSTEM")
+                .content(userName + "님이 입장하였습니다.")
+                .timeStamp(LocalDateTime.now())
+                .build();
+    }
+
 
 }
