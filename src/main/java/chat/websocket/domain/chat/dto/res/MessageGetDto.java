@@ -24,14 +24,19 @@ public record MessageGetDto(
                 .build();
     }
 
-    public static MessageGetDto createJoinMessage(String userName) {
+
+    public static MessageGetDto createSystemMessage(String name, MessageType type) {
+        String content = switch (type) {
+            case JOIN -> name + "님이 입장하셨습니다.";
+            case LEAVE -> name + "님이 퇴장하셨습니다.";
+            default -> throw new IllegalArgumentException("지원하지 않는 메시지 타입: " + type);
+        };
+
         return MessageGetDto.builder()
-                .messageType(MessageType.JOIN)
+                .messageType(type)
                 .senderName("SYSTEM")
-                .content(userName + "님이 입장하였습니다.")
+                .content(content)
                 .timeStamp(LocalDateTime.now())
                 .build();
     }
-
-
 }
